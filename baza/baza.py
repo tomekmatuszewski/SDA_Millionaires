@@ -5,7 +5,7 @@ pd.set_option('display.max_columns', 500)
 
 file_path = os.path.join(os.path.dirname(__file__), "baza.csv")
 
-questions_base = pd.read_csv(file_path, index_col='ID')
+questions_base = pd.read_csv(file_path)
 questions_base['Category'] = questions_base['Category'].astype('category')
 
 categories = questions_base['Category']
@@ -18,5 +18,6 @@ categories = sorted(list(set(questions_base.index.get_level_values(0))))
 
 if __name__ == '__main__':
     questions_base.info(memory_usage="deep")
+    print(list(questions_base[["A", "B", "C", "D"]].columns))
 
 

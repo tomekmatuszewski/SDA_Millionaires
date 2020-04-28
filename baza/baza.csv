@@ -1,4 +1,4 @@
-ID,Category,Question,A,B,C,D,Answear
+ID,Category,Question,A,B,C,D,Answer
 1,Nauka i Technika,Io jest satelitą,Jowisza,Saturna,Urana,Neptuna,Jowisza
 2,Nauka i Technika,Symbol Wolfranu to..?,Wr,Wf,W,Wo,W
 3,Nauka i Technika,W którym roku będzie widoczne z terenów Polski najbliższe całkowite zaćmienie słońca?,2021,2034,2075,2135,2075
@@ -8,7 +8,7 @@ ID,Category,Question,A,B,C,D,Answear
 7,Sport,Ile wygranych pucharów Europy ma na kocie Real Madryt?,10,11,9,13,13
 8,Sport,Słynna drużyna koszykarska z Chicago?,Bulls,Pistons,Hawks,Knicks,Bulls
 9,Sport,Ile medali igrzysk olimpijskich w Vancouver zdobył Adam Małysz?,3,2,4,1,2
-10,Sport,W jakim japońskim siatkarskim klubie gra Michał Kubiak?,JTEKT Stings, Toray Arrows,Toyoda Gosei Trefuerza,Panasonic Panthers,Panasonic Panthers
+10,Sport,W jakim japońskim siatkarskim klubie gra Michał Kubiak?,JTEKT Stings,Toray Arrows,Toyoda Gosei Trefuerza,Panasonic Panthers,Panasonic Panthers
 11,Geografia,Jakie miasto jest stolicą Macedonii?,Skopje,Sarajewo,Belgrad,Sofia,Skopje
 12,Geografia,Pustynia Lota znajduje się w ?,Azja,Ameryka Płd,Afryka,Ameryka Płn,Azja
 13,Geografia,Które z tych miast NIE zostało nazwane na cześc jego założyciela?,Augustów,Wałbrzych,Władysławowo,Kraków,Wałbrzych
