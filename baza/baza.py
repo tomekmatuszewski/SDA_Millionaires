@@ -18,6 +18,6 @@ categories = sorted(list(set(questions_base.index.get_level_values(0))))
 
 if __name__ == '__main__':
     questions_base.info(memory_usage="deep")
-    print(list(questions_base[["A", "B", "C", "D"]].columns))
+    print(questions_base)
 
 

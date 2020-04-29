@@ -1,5 +1,6 @@
-from abc import ABC, abstractmethod
-import os, time, csv
+from abc import ABC
+from millionaires.utils import *
+import os, csv
 
 
 class User(ABC):
@@ -15,7 +16,7 @@ class Player(User):
         self.result = 0
 
     def add_cash(self, cash):
-        self.result += cash
+        self.result = cash
 
     def get_result(self):
         return self.result
@@ -31,26 +32,32 @@ class Admin(User):
         self.password = password
 
     def authorization(self):
-        print("Logging in...")
-        time.sleep(2)
+        if self.nick == os.environ['login'] and os.environ['password'] == self.password:
+            print("Login correct !")
+            return True
         while True:
             if self.nick != os.environ['login'] or os.environ['password'] != self.password:
-                print("Login incorrect!! Enter correct username/password")
-                correct_nick = input("Enter your nick: ")
-                correct_password = input("Enter your password: ")
-                if correct_nick == os.environ['login'] and os.environ['password'] == correct_password:
-                    setattr(self, 'nick', correct_nick)
-                    setattr(self, 'password', correct_password)
-                else:
-                    continue
-            else:
-                print("Login correct !")
-                break
+                print("Login incorrect!! Enter correct username and password")
+                log_out = input("enter [S] to logout [C] to continue: ")
+                log_out = check_user_choice(log_out)
+                if log_out == "S":
+                    return False
+                elif log_out == "C":
+                    correct_nick = input("Enter your nick: ")
+                    correct_password = input("Enter your password: ")
+                    if correct_nick == os.environ['login'] and os.environ['password'] == correct_password:
+                        setattr(self, 'nick', correct_nick)
+                        setattr(self, 'password', correct_password)
+                        print("Login correct !")
+                        return True
+                    else:
+                        continue
 
     @staticmethod
     def add_question():
         while True:
             chooser = input("Do you want to add question to base [Y/N] :")
+            chooser = check_chooser(chooser)
             if chooser == "Y":
                 file_path = os.path.join(os.path.abspath(__file__ + "/../../"), "baza/baza.csv")
                 with open(file_path, 'a+') as file:

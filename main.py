@@ -1,4 +1,4 @@
-from game.game import Game
+from millionaires.game import Game
 
 game = Game()
 
