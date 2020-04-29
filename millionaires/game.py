@@ -36,13 +36,14 @@ class Game:
             number_question = randint(1, len(questions_base.loc[category, :]))
             id_ans = questions_base.loc[(category, number_question), "ID"]
             if id_ans not in self.ans_in_game:
-                print(f"\nCategory: {category}")
+                print(f"\nRound {counter+1}! {self.levels[counter]} PLN to win.")
+                print(f"Category: {category}")
                 print(questions_base.loc[(category, number_question), "Question"])
                 for column in questions_base[["A", "B", "C", "D"]]:
                     print(f"{column}: {questions_base.loc[(category, number_question), column]}")
                 self.ans_in_game.append(id_ans)
                 if self.fifty_fifty > 0:
-                    hint = input(f"You have {self.fifty_fifty} hints 50/50 - do you want to use? [Y/N] ")
+                    hint = input(f"You have {self.fifty_fifty} hints 50/50 - do you want to use? [Y/N]: ")
                     hint = check_hint(hint)
                     if hint == "Y":
                         self.hint(category, number_question)
@@ -68,7 +69,7 @@ class Game:
         return "Welcome in game Millionaires !!!"
 
     def add_result(self):
-        self.rank[self.player.get_player_nick()] = self.player.get_result()
+        self.rank[self.player.get_player_nick()] = f"{self.player.get_result()} PLN"
         with open(self.rank_path, "w+") as file_json:
             json.dump(self.rank, file_json)
 
@@ -82,7 +83,7 @@ class Game:
         lst_col = list(questions_base[["A", "B", "C", "D"]].columns)
         for column in lst_col:
             if questions_base.loc[(category, number_question), column] == questions_base.loc[
-                (category, number_question), 'Answer']:
+                                                        (category, number_question), 'Answer']:
                 print(f"\n{column}: {questions_base.loc[(category, number_question), column]}")
                 cols_lst.append(column)
         while True:
