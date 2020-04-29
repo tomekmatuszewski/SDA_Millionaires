@@ -43,7 +43,8 @@ class Game:
                     print(f"{column}: {questions_base.loc[(category, number_question), column]}")
                 self.ans_in_game.append(id_ans)
                 if self.fifty_fifty > 0:
-                    hint = input(f"You have {self.fifty_fifty} hints 50/50 - do you want to use? [Y/N]: ")
+                    hint = input(f"You have {self.fifty_fifty} hint{'s' if self.fifty_fifty == 2 else ''} "
+                                 f"50/50 - do you want to use? [Y/N]: ")
                     hint = check_hint(hint)
                     if hint == "Y":
                         self.hint(category, number_question)
