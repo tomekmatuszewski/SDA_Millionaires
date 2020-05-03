@@ -14,7 +14,7 @@ class Game:
         self.categories = categories
         self.ans_in_game = []
         self.player = None
-        self.fifty_fifty = 2
+        self.max_number_hints = 2
         self.rank_path = os.path.join(os.path.dirname(__file__), "rank.json")
         self.rank = self.load_ranking()
         print(repr(self))
@@ -42,8 +42,8 @@ class Game:
                 for column in questions_base[["A", "B", "C", "D"]]:
                     print(f"{column}: {questions_base.loc[(category, number_question), column]}")
                 self.ans_in_game.append(id_ans)
-                if self.fifty_fifty > 0:
-                    hint = input(f"You have {self.fifty_fifty} hint{'s' if self.fifty_fifty == 2 else ''} "
+                if self.max_number_hints > 0:
+                    hint = input(f"You have {self.max_number_hints} hint{'s' if self.max_number_hints == 2 else ''} "
                                  f"50/50 - do you want to use? [Y/N]: ")
                     hint = check_hint(hint)
                     if hint == "Y":
@@ -92,7 +92,7 @@ class Game:
             if sec_col not in cols_lst:
                 print(f"{sec_col}: {questions_base.loc[(category, number_question), sec_col]}")
                 break
-        self.fifty_fifty -= 1
+        self.max_number_hints -= 1
 
     def check_question(self, category, number_question):
         global counter
