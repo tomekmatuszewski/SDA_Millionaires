@@ -18,11 +18,18 @@ class Player(User):
     def add_cash(self, cash):
         self.result = cash
 
+    @property
     def get_result(self):
         return self.result
 
+    @property
     def get_player_nick(self):
         return self.nick
+
+    @classmethod
+    def create_player(cls, nick):
+        nick_imp = check_player_nick(nick)
+        return Player(nick_imp)
 
 
 class Admin(User):
@@ -38,8 +45,7 @@ class Admin(User):
         while True:
             if self.nick != os.environ['login'] or os.environ['password'] != self.password:
                 print("Login incorrect!! Enter correct username and password")
-                log_out = input("enter [S] to logout [C] to continue: ")
-                log_out = check_user_choice(log_out)
+                log_out = check_user_choice(input("enter [S] to logout [C] to continue: "))
                 if log_out == "S":
                     return False
                 elif log_out == "C":
@@ -56,8 +62,7 @@ class Admin(User):
     @staticmethod
     def add_question():
         while True:
-            chooser = input("Do you want to add question to base [Y/N] :")
-            chooser = check_chooser(chooser)
+            chooser = check_chooser(input("Do you want to add question to base [Y/N] :"))
             if chooser == "Y":
                 file_path = os.path.join(os.path.abspath(__file__ + "/../../"), "baza/baza.csv")
                 with open(file_path, 'a+') as file:
@@ -74,6 +79,10 @@ class Admin(User):
                     continue
             elif chooser == "N":
                 break
+
+    @classmethod
+    def create_admin(cls, nick, password):
+        return Admin(nick, password)
 
 
 

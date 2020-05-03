@@ -1,23 +1,55 @@
 import pandas as pd
-import os
+import os, json
+
+
 pd.set_option('display.max_colwidth', 100)
 pd.set_option('display.max_columns', 500)
 
-file_path = os.path.join(os.path.dirname(__file__), "baza.csv")
 
-questions_base = pd.read_csv(file_path)
-questions_base['Category'] = questions_base['Category'].astype('category')
+class Database:
 
-categories = questions_base['Category']
+    def __init__(self):
+        self.base_file_path = os.path.join(os.path.dirname(__file__), "baza.csv")
+        self._questions_base = None
+        self._categories = None
+        self.rank_path = os.path.join(os.path.dirname(__file__), "rank.json")
+        self.rank = self.load_rank()
+
+    @property
+    def questions_base(self):
+        self._questions_base = pd.read_csv(self.base_file_path)
+        self._questions_base['Category'] = self._questions_base['Category'].astype('category')
+        self._questions_base['Number'] = self._questions_base.groupby(by='Category').cumcount() + 1
+        self._questions_base = self._questions_base.set_index(["Category", "Number"]).sort_index()
+        return self._questions_base
+
+    @property
+    def categories(self):
+        self._categories = sorted(list(set(self.questions_base.index.get_level_values(0))))
+        return self._categories
+
+    def load_rank(self):
+        if not os.path.exists(self.rank_path):
+            with open(self.rank_path, "w") as file:
+                file.write('{}')
+        with open(self.rank_path) as file:
+            rank = json.load(file)
+        return rank
+
+    def add_result_to_rank(self, player, player_acc):
+        self.rank[player.get_player_nick] = f"{player_acc} PLN"
+        with open(self.rank_path, "w+") as file_json:
+            json.dump(self.rank, file_json)
 
 
-questions_base['Number'] = questions_base.groupby(by='Category').cumcount() + 1
-questions_base = questions_base.set_index(["Category", "Number"]).sort_index()
-
-categories = sorted(list(set(questions_base.index.get_level_values(0))))
 
 if __name__ == '__main__':
-    questions_base.info(memory_usage="deep")
-    print(questions_base)
+    data = Database()
+
+
+
+
+
+
 
 

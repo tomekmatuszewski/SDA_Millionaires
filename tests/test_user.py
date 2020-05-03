@@ -1,4 +1,4 @@
-from user.user import Player, Admin
+from millionaires.user import Player, Admin
 import pytest
 
 
@@ -27,7 +27,7 @@ class TestUser:
                              )
     def test_get_result(self, setup, test_input, expected):
         setup.add_cash(test_input)
-        assert setup.get_result() == expected
+        assert setup.get_result == expected
 
     @pytest.mark.parametrize("test_input,expected",
                              [("tm", "tm"),
@@ -37,7 +37,7 @@ class TestUser:
                              )
     def test_get_player_nick(self, setup, test_input, expected):
         setup.nick = test_input
-        assert setup.get_player_nick() == expected
+        assert setup.get_player_nick == expected
 
 
 class TestAdmin:
