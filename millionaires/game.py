@@ -1,7 +1,5 @@
 from baza.baza import Database
-from random import choice, randint, shuffle
-import json
-from millionaires.utils import *
+from random import choice, shuffle
 
 
 class Game:
@@ -15,51 +13,6 @@ class Game:
         self.ans_in_game = []
         self.max_number_hints = 2
         self.player_acc = 0
-    
-    def play_game(self, player):
-        while self.counter < len(self.levels):
-            category = choice(self.base.categories)
-            number_question = randint(1, len(self.base.questions_base.loc[category, :]))
-            if self.select_new_question(category, number_question):
-                print(f"\nRound {self.counter + 1}! {self.levels[self.counter]} PLN to win.")
-                print(f"Category: {category}")
-                print(self.base.questions_base.loc[(category, number_question), "Question"])
-                for column in self.base.questions_base[["A", "B", "C", "D"]]:
-                    print(f"{column}: {self.base.questions_base.loc[(category, number_question), column]}")
-                if self.max_number_hints > 0:
-                    hint = check_hint(input(f"You have {self.max_number_hints} hint{'s' if self.max_number_hints == 2 else ''} "
-                                 f"50/50 - do you want to use? [Y/N]: "))
-                    if hint == "Y":
-                        self.print_hint(self.hint(category, number_question), category, number_question)
-                        correct_answer = check_correct_answer(input("Select correct answer [A - D]: "))
-                        if self.check_question(category, number_question, correct_answer):
-                            print(f'Great, you won {self.levels[self.counter]} PLN!')
-                            continue
-                        self.lost_game(player)
-                        print(f"You lost! Your score is {player.get_result} PLN")
-                        break
-                    elif hint == "N":
-                        correct_answer = check_correct_answer(input("Select correct answer [A - D]: "))
-                        if self.check_question(category, number_question, correct_answer):
-                            print(f'Great, you won {self.levels[self.counter]} PLN!')
-                            continue
-                        self.lost_game(player)
-                        print(f"You lost! Your score is {player.get_result} PLN")
-                        break
-                else:
-                    correct_answer = check_correct_answer(input("Select correct answer [A - D]: "))
-                    if self.check_question(category, number_question, correct_answer):
-                        print(f'Great, you won {self.levels[self.counter]} PLN!')
-                        continue
-                    self.lost_game(player)
-                    print(f"You lost! Your score is {player.get_result} PLN")
-                    break
-            else:
-                continue
-        self.base.add_result_to_rank(player, self.player_acc)
-
-    def __repr__(self):
-        return f"Welcome in game {self.name} !!!"
 
     def select_new_question(self, category, number_question):
         id_ans = self.base.questions_base.loc[(category, number_question), "ID"]
@@ -83,10 +36,10 @@ class Game:
         shuffle(cols_lst)
         return cols_lst
 
-    def print_hint(self, cols, category, number_question):
-        print("\n")
-        for col in cols:
-            print(f"{col}: {self.base.questions_base.loc[(category, number_question), col]}")
+    def check_number_of_hints(self):
+        if self.max_number_hints > 0:
+            return True
+        return False
 
     def check_question(self, category, number_question, answer):
         if self.is_correct_answer(category, number_question, answer):
@@ -106,6 +59,9 @@ class Game:
 
     def add_player_cash(self):
         self.player_acc = self.levels[self.counter]
+
+    def win_million(self, player):
+        self.base.add_result_to_rank(player, self.player_acc)
 
 
 if __name__ == '__main__':

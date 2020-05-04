@@ -1,5 +1,7 @@
 import pandas as pd
-import os, json
+import os
+import json
+import csv
 
 
 pd.set_option('display.max_colwidth', 100)
@@ -37,14 +39,19 @@ class Database:
         return rank
 
     def add_result_to_rank(self, player, player_acc):
-        self.rank[player.get_player_nick] = f"{player_acc} PLN"
+        self.rank[player.player_nick] = f"{player_acc} PLN"
         with open(self.rank_path, "w+") as file_json:
             json.dump(self.rank, file_json)
 
+    def add_question_to_base(self, id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans):
+        with open(self.base_file_path, 'a+') as file:
+            base = csv.writer(file, delimiter=",")
+            base.writerow([id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans])
 
 
 if __name__ == '__main__':
     data = Database()
+    print(data.rank_path)
 
 
 

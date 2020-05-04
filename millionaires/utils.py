@@ -46,7 +46,4 @@ def check_correct_answer(answer):
 
 
 if __name__ == "__main__":
-    nick = "username0"
-    pattern = re.compile(r"^([a-zA-z0-9]){1,10}$")
-    result = re.search(pattern, nick)
-    print(result)
+   pass
