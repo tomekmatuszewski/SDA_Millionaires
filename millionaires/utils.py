@@ -25,14 +25,18 @@ def check_user_choice(log):
 def check_chooser(chooser):
     pattern = re.compile(r"(Y|N)")
     while not re.search(pattern, chooser):
-        chooser = input("Please enter correct character Y - add question to base, N- log out: ")
+        chooser = input(
+            "Please enter correct character Y - add question to base, N- log out: "
+        )
     return chooser
 
 
 def check_hint(hint):
     pattern = re.compile(r"(Y|N)")
     while not re.search(pattern, hint):
-        hint = input("Please enter correct character Y - take hint N- continue without hint: ")
+        hint = input(
+            "Please enter correct character Y - take hint N- continue without hint: "
+        )
     return hint
 
 
@@ -43,7 +47,15 @@ def check_correct_answer(answer):
     return answer
 
 
+def check_id(id_):
+    while True:
+        try:
+            int(id_)
+            return int(id_)
+        except ValueError:
+            id_ = input("ID must be Integer - Select the ID: ")
+            continue
 
 
 if __name__ == "__main__":
-   pass
+    pass

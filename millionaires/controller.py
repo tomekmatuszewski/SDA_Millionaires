@@ -1,11 +1,10 @@
-from millionaires.game import Game
-from millionaires.viewer import Printer
-from millionaires.user import Player, Admin
+from millionaires.model import Game
+from millionaires.user import Admin, Player
 from millionaires.utils import *
-from random import choice, randint
+from millionaires.viewer import Printer
 
 
-class Controller:
+class Millionaires:
     def __init__(self):
         self.game = Game()
         self.printer = Printer()
@@ -20,13 +19,13 @@ class Controller:
         return False
 
     def incorrect_answer(self, player):
-        self.game.lost_game(player)
+        self.game.end_game(player)
         self.printer.print_looser_info(self.game)
 
     def play_game(self, player):
         while self.game.counter < len(self.game.levels):
-            category = choice(self.game.base.categories)
-            number_question = randint(1, len(self.game.base.questions_base.loc[category, :]))
+            category = self.game.draw_category()
+            number_question = self.game.draw_number_question(category)
             if self.game.select_new_question(category, number_question):
                 self.printer.print_question(self.game, category, number_question)
                 if self.game.check_number_of_hints():
@@ -50,43 +49,55 @@ class Controller:
             else:
                 continue
         else:
-            self.game.win_million(player)
+            self.game.end_game(player)
 
     def run_game(self):
         self.printer.print_title(self.game)
         username = self.printer.print_user_choice()
         if username == "A":
             admin = self.add_admin()
-            if admin.authorization:
+            if admin.authorization():
                 self.printer.correct_login()
-                self.add_question()
+                self.add_question(admin)
             else:
                 self.printer.incorrect_login()
-                while True:
-                    log_out = input("Enter 'S' to stop 'C' to try log in again: ")
-                    if log_out == "S":
-                        break
-                    elif log_out == "C":
-                        admin = self.add_admin()
-                        if admin.authorization:
-                            self.printer.correct_login()
-                            self.add_question()
-                        else:
-                            continue
+                self.incorrect_log_next_action()
         elif username == "P":
             player = self.add_player()
             self.play_game(player)
 
     def add_question(self, admin):
-        id_ = int(input("Select the ID: "))
-        category = input("Select the category: ")
-        question = input("Select the question: ")
-        a_ans = input("A ans: ")
-        b_ans = input("B ans: ")
-        c_ans = input("C ans: ")
-        d_ans = input("D ans: ")
-        right_ans = input("Select correct answer: ")
-        admin.adding_question(id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans)
+        while True:
+            chooser = self.printer.adding_question_to_base()
+            if chooser == "Y":
+                id_ = check_id(input("Select the ID: "))
+                category = input("Select the category: ")
+                question = input("Select the question: ")
+                a_ans = input("A ans: ")
+                b_ans = input("B ans: ")
+                c_ans = input("C ans: ")
+                d_ans = input("D ans: ")
+                right_ans = input("Select correct answer: ")
+                admin.database.add_question_to_base(
+                    id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans
+                )
+                continue
+            elif chooser == "N":
+                return False
+
+    def incorrect_log_next_action(self):
+        while True:
+            log_out = input("Enter 'S' to stop 'C' to try log in again: ")
+            if log_out == "S":
+                break
+            elif log_out == "C":
+                admin = self.add_admin()
+                if admin.authorization():
+                    self.printer.correct_login()
+                    if not self.add_question(admin):
+                        break
+                else:
+                    continue
 
     @staticmethod
     def add_player():

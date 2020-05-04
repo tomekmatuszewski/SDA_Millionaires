@@ -1,7 +1,7 @@
 Millionaires Game!
 
 After installing pack
-from millionaires.game import Game
+from millionaires.controller import Millionaires
 create instance of Game and try to get Million
 
 If you want to add question to base:

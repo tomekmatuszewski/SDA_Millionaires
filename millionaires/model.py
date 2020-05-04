@@ -1,14 +1,27 @@
+from random import choice, randint, shuffle
+
 from baza.baza import Database
-from random import choice, shuffle
 
 
 class Game:
-
     counter = 0
 
     def __init__(self):
         self.name = "Millionaires"
-        self.levels = [500, 1000, 2000, 5000, 10000, 20000, 40000, 75000, 125000, 250000, 500000, 1000000]
+        self.levels = [
+            500,
+            1000,
+            2000,
+            5000,
+            10000,
+            20000,
+            40000,
+            75000,
+            125000,
+            250000,
+            500000,
+            1000000,
+        ]
         self.base = Database()
         self.ans_in_game = []
         self.max_number_hints = 2
@@ -20,6 +33,12 @@ class Game:
             self.ans_in_game.append(id_ans)
             return True
         return False
+
+    def draw_category(self):
+        return choice(self.base.categories)
+
+    def draw_number_question(self, category):
+        return randint(1, len(self.base.questions_base.loc[category, :]))
 
     def hint(self, category, number_question):
         cols_lst = []
@@ -49,20 +68,19 @@ class Game:
         return False
 
     def is_correct_answer(self, category, number_question, answer):
-        if self.base.questions_base.loc[(category, number_question), answer] == self.base.questions_base.loc[
-            (category, number_question), 'Answer']:
+        if (
+            self.base.questions_base.loc[(category, number_question), answer]
+            == self.base.questions_base.loc[(category, number_question), "Answer"]
+        ):
             return True
         return False
 
-    def lost_game(self, player):
+    def end_game(self, player):
         self.base.add_result_to_rank(player, self.player_acc)
 
     def add_player_cash(self):
         self.player_acc = self.levels[self.counter]
 
-    def win_million(self, player):
-        self.base.add_result_to_rank(player, self.player_acc)
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

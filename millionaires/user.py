@@ -1,18 +1,17 @@
-from abc import ABC
-from millionaires.viewer import Printer
-from millionaires.utils import *
-from baza.baza import Database
 import os
+from abc import ABC
+
+from baza.baza import Database
+from millionaires.utils import *
+from millionaires.viewer import Printer
 
 
 class User(ABC):
-
     def __init__(self, nick: str):
         self.nick = nick
 
 
 class Player(User):
-
     def __init__(self, *args):
         super().__init__(*args)
 
@@ -27,7 +26,6 @@ class Player(User):
 
 
 class Admin(User):
-
     def __init__(self, nick, password):
         super().__init__(nick)
         self.password = password
@@ -35,19 +33,16 @@ class Admin(User):
         self.database = Database()
 
     def authorization(self):
-        if os.environ.get('login', self.nick) and os.environ.get('password', self.password):
+        os.environ["login"] = "admin"
+        os.environ["password"] = "admin777"
+        if os.environ["login"] == self.nick and os.environ["password"] == self.password:
             return True
         return False
-
-    def adding_question(self, id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans):
-        while True:
-            chooser = self.printer.adding_question_to_base()
-            if chooser == "Y":
-                self.database.add_question_to_base(id_, category, question, a_ans, b_ans, c_ans, d_ans, right_ans)
-                continue
-            elif chooser == "N":
-                break
 
     @classmethod
     def create_admin(cls, nick, password):
         return Admin(nick, password)
+
+
+if __name__ == "__main__":
+    pass

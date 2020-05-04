@@ -1,5 +1,5 @@
-from millionaires.controller import Controller
+from millionaires.controller import Millionaires
 
-controller = Controller()
+millionaires = Millionaires()
 
-controller.run_game()
+millionaires.run_game()
