@@ -102,12 +102,12 @@ class Millionaires:
     @staticmethod
     def add_player():
         nick = input("Enter your nick (max 10 chars [a-Z, 0-9]): ")
-        player = Player.create_player(nick)
-        return player
+        return Player.create_player(nick)
+
 
     @staticmethod
     def add_admin():
         nick = input("Enter your nick: ")
         password = input("Enter your password: ")
-        admin = Admin.create_admin(nick, password)
-        return admin
+        return Admin.create_admin(nick, password)
+
