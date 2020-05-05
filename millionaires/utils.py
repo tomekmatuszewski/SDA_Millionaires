@@ -1,6 +1,6 @@
 import re
 
-
+# functions responsible for checking if plyaer input is correct
 def check_username(username):
     pattern = re.compile(r"^(P|A)$")
     while not re.search(pattern, username):

@@ -32,6 +32,7 @@ class Admin(User):
         self.printer = Printer()
         self.database = Database()
 
+    # authorization of selected login and password of admin
     def authorization(self):
         os.environ["login"] = "admin"
         os.environ["password"] = "admin777"

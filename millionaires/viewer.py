@@ -2,6 +2,7 @@ from millionaires.utils import *
 
 
 class Printer:
+    # printing a random question and answers
     @staticmethod
     def print_question(game, category, number_question):
         print(f"\nRound {game.counter + 1}! {game.levels[game.counter]} PLN to win.")
@@ -12,6 +13,7 @@ class Printer:
                 f"{column}: {game.base.questions_base.loc[(category, number_question), column]}"
             )
 
+    # printing a hint (50/50)
     @staticmethod
     def print_hint(game, category, number_question):
         cols = game.hint(category, number_question)
@@ -21,6 +23,7 @@ class Printer:
                 f"{col}: {game.base.questions_base.loc[(category, number_question), col]}"
             )
 
+    # printing a info about possible hints
     @staticmethod
     def print_hint_info(game):
         print()
@@ -32,10 +35,12 @@ class Printer:
         )
         return hint
 
+    # printing a info after correct answer
     @staticmethod
     def print_win_info(game):
         print(f"Great, you won {game.levels[game.counter - 1]} PLN!")
 
+    # printing a info after incorrect answer
     @staticmethod
     def print_looser_info(game):
         print(f"You lost! Your score is {game.player_acc} PLN")

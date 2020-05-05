@@ -27,6 +27,7 @@ class Game:
         self.max_number_hints = 2
         self.player_acc = 0
 
+    # function responsible for select new question from database and checking if the questions have already been asked
     def select_new_question(self, category, number_question):
         id_ans = self.base.questions_base.loc[(category, number_question), "ID"]
         if id_ans not in self.ans_in_game:
@@ -40,6 +41,7 @@ class Game:
     def draw_number_question(self, category):
         return randint(1, len(self.base.questions_base.loc[category, :]))
 
+    # choice of 50/50 hint
     def hint(self, category, number_question):
         cols_lst = []
         lst_col = list(self.base.questions_base[["A", "B", "C", "D"]].columns)
@@ -55,11 +57,13 @@ class Game:
         shuffle(cols_lst)
         return cols_lst
 
+    # checking if hint is available
     def check_number_of_hints(self):
         if self.max_number_hints > 0:
             return True
         return False
 
+    # checking if queston is correct
     def check_question(self, category, number_question, answer):
         if self.is_correct_answer(category, number_question, answer):
             self.add_player_cash()
@@ -67,6 +71,7 @@ class Game:
             return True
         return False
 
+    # direct checking of assertions in a pandas
     def is_correct_answer(self, category, number_question, answer):
         if (
             self.base.questions_base.loc[(category, number_question), answer]
@@ -75,9 +80,11 @@ class Game:
             return True
         return False
 
+    # ending game after incorrect answer or winning million
     def end_game(self, player):
         self.base.add_result_to_rank(player, self.player_acc)
 
+    # actualization of player account
     def add_player_cash(self):
         self.player_acc = self.levels[self.counter]
 

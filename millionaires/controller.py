@@ -11,6 +11,7 @@ class Millionaires:
         self._player = None
         self._admin = None
 
+    # checking correct answer of user and print info
     def correct_answer(self, category, number_question):
         correct_answer = check_correct_answer(input("Select correct answer [A - D]: "))
         if self.game.check_question(category, number_question, correct_answer):
@@ -18,10 +19,12 @@ class Millionaires:
             return True
         return False
 
+    # responsible for en end the game
     def incorrect_answer(self, player):
         self.game.end_game(player)
         self.printer.print_looser_info(self.game)
 
+    # scenario of game after checking player mode
     def play_game(self, player):
         while self.game.counter < len(self.game.levels):
             category = self.game.draw_category()
@@ -51,6 +54,7 @@ class Millionaires:
         else:
             self.game.end_game(player)
 
+    # mode selection - player/admin and running the game
     def run_game(self):
         self.printer.print_title(self.game)
         username = self.printer.print_user_choice()
@@ -66,6 +70,7 @@ class Millionaires:
             player = self.add_player()
             self.play_game(player)
 
+    # adding question in admin mode
     def add_question(self, admin):
         while True:
             chooser = self.printer.adding_question_to_base()
@@ -85,6 +90,7 @@ class Millionaires:
             elif chooser == "N":
                 return False
 
+    # action selection after failed login as admin
     def incorrect_log_next_action(self):
         while True:
             log_out = input("Enter 'S' to stop 'C' to try log in again: ")
@@ -99,15 +105,15 @@ class Millionaires:
                 else:
                     continue
 
+    # creating player instance
     @staticmethod
     def add_player():
         nick = input("Enter your nick (max 10 chars [a-Z, 0-9]): ")
         return Player.create_player(nick)
 
-
+    # creating admin instance
     @staticmethod
     def add_admin():
         nick = input("Enter your nick: ")
         password = input("Enter your password: ")
         return Admin.create_admin(nick, password)
-
